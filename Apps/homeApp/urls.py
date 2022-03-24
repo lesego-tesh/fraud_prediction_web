@@ -29,5 +29,5 @@ urlpatterns = [
     path('account_details/',account_details,name='account_details'),
     path('change_password/',change_password,name='change_password'),
     path('analysis/',analysis,name='analysis'),
-    path('view_data/',view_data,name='view_data'),
+    path('view_data/<int:id>/',view_data,name='view_data'),
 ]

@@ -38,7 +38,7 @@ Home | Fraud Prediction System
                     <td>{{i.file_name}}</td>
                     <td>{{i.description |truncatechars:60}}</td>
                     <td>
-                        <a href="{% url 'view_data'%}"><button type="button" class="btn btn-primary">View Data</button></a>
+                        <a href="{% url 'view_data' i.id%}"><button type="button" class="btn btn-primary">View Data</button></a>
                         <a href="{% url 'prediction_button'  %}"><button type="button" class="btn btn-secondary">Prediction</button></a>
                         <a href="{% url 'delete_data' i.id %}"><button type="button" class="btn btn-secondary">Delete</button></a>
                 </tr>
