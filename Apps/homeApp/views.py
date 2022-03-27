@@ -7,12 +7,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.conf import settings
 from .models import DataFileUpload
+#from .predModel import Prediction
 def base(request):
     return render(request,'homeApp/landing_page.html')
     
 def upload_credit_data(request):
     return render(request,'homeApp/upload_credit_data.html')
-def prediction_button(request):
+def prediction_button(request,id):
     return render(request,'homeApp/fraudpred.html')
     
 def reports(request):
@@ -24,7 +25,14 @@ def enter_form_data_manually(request):
 def predict_data_manually(request):
     return render(request,'homeApp/predict_data_manually.html')
 
-def add_files_single(request):
+def add_files_single(request,id):
+    context = {}
+    file_obj=DataFileUpload.objects.get(id=id)
+    file_loc = str(file_obj.actual_file)
+    fileloc = file_loc.replace('/', '\\')
+    fileloc = "media\\" + fileloc
+    #model = Prediction(fileloc)
+    
     return render(request,'homeApp/add_files_single.html')
 def predict_csv_single(request):
     return render(request,'homeApp/predict_csv_single.html')
@@ -57,9 +65,11 @@ def view_data(request,id):
         header = list(row.keys())
         break
     data = []
-    for row in reader:
+    for index, row in enumerate (reader):
         values = list(row.values())
         data.append(values)
+        if index == 20:
+            break
     context['header'] = header
     context['data'] = data
     return render(request,'homeApp/view_data.html', context)

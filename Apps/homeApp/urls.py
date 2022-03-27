@@ -10,7 +10,7 @@ urlpatterns = [
     path('dashboard/',dashboard,name='dashboard'),
     path('reports/',reports,name='reports'),
     path('upload_credit_data/',upload_credit_data,name='upload_credit_data'),
-    path('prediction_button/',prediction_button,name='prediction_button'),
+    path('prediction_button/<int:id>/',prediction_button,name='prediction_button'),
     
     #for main adminstrator upload 
     
