@@ -1,9 +1,13 @@
 absl-py==1.0.0
+asgiref==3.5.0
 astunparse==1.6.3
 cachetools==5.0.0
 certifi==2021.10.8
 charset-normalizer==2.0.12
 cycler==0.11.0
+dj-database-url==0.5.0
+Django==4.0.3
+django-heroku==0.3.1
 flatbuffers==2.0
 fonttools==4.31.2
 gast==0.5.3
@@ -28,6 +32,7 @@ packaging==21.3
 pandas==1.4.1
 Pillow==9.0.1
 protobuf==3.19.4
+psycopg2==2.9.3
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pyparsing==3.0.7
@@ -41,6 +46,7 @@ scipy==1.8.0
 seaborn==0.11.2
 six==1.16.0
 sklearn==0.0
+sqlparse==0.4.2
 tensorboard==2.8.0
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
@@ -50,6 +56,8 @@ termcolor==1.1.0
 tf-estimator-nightly==2.8.0.dev2021122109
 threadpoolctl==3.1.0
 typing_extensions==4.1.1
+tzdata==2022.1
 urllib3==1.26.9
 Werkzeug==2.0.3
+whitenoise==6.0.0
 wrapt==1.14.0
