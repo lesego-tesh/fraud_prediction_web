@@ -1,11 +1,13 @@
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras import layers
-from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Flatten,Dense,Dropout,BatchNormalization
-from tensorflow.keras.layers import Conv1D
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.utils import to_categorical
+import tensorflow as tf
+from tensorflow import keras
+from . import layers
+from . import Sequential
+from . import Flatten,Dense,Dropout,BatchNormalization
+from . import Conv1D
+from . import Adam
+from . import to_categorical 
 import pandas as pd
 import numpy as np
 import seaborn as sb
@@ -17,12 +19,15 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from mlxtend.plotting import plot_confusion_matrix
 
 class Prediction:
-    df_fraud = None
+    dataset = None
 
     def __init__(self, csv_loc) -> None:
-        self.read(self,csv_loc)
+        self.read_dataset(self,csv_loc)
 
-    def read(self,csv_loc):
-        self.df_fraud = pd.read_csv(csv_loc)
-        print(self.df_fraud.shape)
-        self.df_fraud.describe()
+    def read_dataset(self,csv_loc):
+        self.dataset = pd.read_csv(csv_loc)
+        print(self.dataset.shape)
+        self.dataset.describe()
+
+        dataset_desc = self.dataset.describe()
+        print(dataset_desc)
