@@ -33,35 +33,39 @@ Fraud Prediction System
 			</tr>
 			<tr>
 				<td>Type of Data</td>
-				<td>Empty DataFrame Columns:[] index:[]</td>
+				<td>{{ dataType }}</td>
 			</tr>
 			<tr>
 				<td>Data Shape</td>
-				<td>(10000,31)</td>
+				<td>{{Shape}}</td>
 			</tr>
 			<tr>
 				<td>Unique Target Values</td>
-				<td>[0 1]</td>
+				<td>{{UTV}}</td>
 			</tr>
 			<tr>
-				<td>Percentage of patience without credit problems:</td>
-				<td>99.62%</td>
+				<td>accuracy:</td>
+				<td>{{score}}</td>
 			</tr>
 			<tr>
-				<td>Percentage of patience with credit problems:</td>
-				<td>0.38%</td>
+				<td>f1Score :</td>
+				<td>{{f1Score}}</td>
+			</tr>
+			<tr>
+				<td>f2Score :</td>
+				<td>{{f2Score}}</td>
 			</tr>
 			<tr>
 				<td>Is there any null values</td>
-				<td>False</td>
+				<td>{{anyNull}}</td>
 			</tr>
 			<tr>
-				<td>Total Fraud Transaction in dataset(Data Shape)</td>
-				<td>(38,31)</td>
+				<td>Total Fraud</td>
+				<td>{{tFraud}}</td>
 			</tr>
 			<tr>
-				<td>Total Normal Transaction in dataset(Data Shape)</td>
-				<td>(9962,31)</td>
+				<td>Total Normal</td>
+				<td>{{tNormal}}</td>
 			</tr>
 		</table>
 	</div>

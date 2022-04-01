@@ -40,7 +40,7 @@ Fraud Prediction System
                     <td>
                         <a href="{% url 'view_data' i.id%}"><button type="button" class="btn btn-primary">View Data</button></a>
                         <a href="{% url 'prediction_button' i.id  %}"><button type="button" class="btn btn-secondary">Prediction</button></a>
-                         <a href="{% url 'analysis' %}"><button type="button" class="btn btn-secondary">Analysis</button></a>
+                         {% comment %} <a href="{% url 'analysis' %}"><button type="button" class="btn btn-secondary">Analysis</button></a> {% endcomment %}
                         <a href="{% url 'delete_data' i.id %}"><button type="button" class="btn btn-secondary">Delete</button></a>
                 </tr>
                 {% endfor %}

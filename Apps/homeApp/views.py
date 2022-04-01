@@ -7,14 +7,25 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.conf import settings
 from .models import DataFileUpload
-#from .predModel import Prediction
+from .predModel import Prediction
 def base(request):
     return render(request,'homeApp/landing_page.html')
     
 def upload_credit_data(request):
     return render(request,'homeApp/upload_credit_data.html')
 def prediction_button(request,id):
-    return render(request,'homeApp/fraudpred.html')
+    context = {}
+    print(id)
+    file_obj=DataFileUpload.objects.get(id=id)
+    file_loc = str(file_obj.actual_file)
+    fileloc = file_loc.replace('/', '\\')
+    fileloc = "media\\" + fileloc
+    model = Prediction(fileloc)
+    context = model.run()
+    print("\n context")
+    print(context)
+    
+    return render(request,'homeApp/analysis.html', context)
     
 def reports(request):
     all_data_files_objs=DataFileUpload.objects.all()
@@ -26,14 +37,16 @@ def predict_data_manually(request):
     return render(request,'homeApp/predict_data_manually.html')
 
 def add_files_single(request,id):
-    context = {}
     file_obj=DataFileUpload.objects.get(id=id)
     file_loc = str(file_obj.actual_file)
     fileloc = file_loc.replace('/', '\\')
     fileloc = "media\\" + fileloc
-    #model = Prediction(fileloc)
+    model = Prediction(fileloc)
+    context = model.run()
+    print("\n context")
+    print(context)
     
-    return render(request,'homeApp/add_files_single.html')
+    return render(request,'homeApp/analysis.html', context)
 def predict_csv_single(request):
     return render(request,'homeApp/predict_csv_single.html')
 
@@ -87,7 +100,10 @@ def upload_data(request):
             except:
                 messages.warning(request, "Invalid/wrong format. Please upload File.")
                 return redirect('/upload_credit_data')
+
+                
             description  = request.POST.get('description')
+
 
             DataFileUpload.objects.create(
                 file_name=data_file_name,
