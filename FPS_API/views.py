@@ -1,51 +1,57 @@
-# todo/todo_api/views.py
-from rest_framework.views import APIView
+from django.shortcuts import render
+from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import status
-#from rest_framework import permissions
-from rest_framework.decorators import parser_classes
-from rest_framework.parsers import JSONParser
+from django.contrib import messages
+from Apps.homeApp.predModel import Prediction
+
+from .Serializers import UploadSerializer
+# Import Models
 from Apps.homeApp.models import DataFileUpload
-#from .models import Todo
-from .serializers import fpsSerializer
 
+# Create your views here.
+class UploadViewSet(ViewSet):
+    serializer_class = UploadSerializer
 
-class csvUploadView(APIView):
-    # add permission to check if user is authenticated
-    #permission_classes = [permissions.IsAuthenticated]
-
-    #parser_classes = [MultiPartParser]
-
-    # 1. List all
-    def post(self, request, filename, format=None):
-        csv_obj = request.data['file']
-        '''
-        List all the requests items for given requested user
-
-        '''
-        DataFileUpload.objects.create(
-                file_name=filename,
-                actual_file=filename,
-                description=request.data['description_file']
-                )
-                
-       # csv = DataFileUpload.objects.filter(user = request.user.id)
-        serializer = fpsSerializer(csv_obj, many=True)
+    def list(self, request):
+        csvs=DataFileUpload.objects.all()
+        serializer = UploadSerializer(csvs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-      
-    # # 2. Create
-    # def post(self, request, *args, **kwargs):
-    #     '''
-    #     Create the Todo with given todo data
-    #     '''
-    #     data = {
-    #         'task': request.data.get('task'), 
-    #         'completed': request.data.get('completed'), 
-    #         'user': request.user.id
-    #     }
-    #     serializer = TodoSerializer(data=data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def create(self, request):
+        if request.method == 'POST':
+            try:
+                file_uploaded = request.FILES.get('actual_file')
+                content_type = file_uploaded.content_type
+                data_file_name  = request.POST.get('file_name')
+                description  = request.POST.get('description')
+                
+                DataFileUpload.objects.create(
+                    file_name=data_file_name,
+                    actual_file=file_uploaded,
+                    description=description,
+                    
+                )
+
+                response = "POST API and you have uploaded a {} file".format(content_type)
+                return Response(response)
+                
+            except:
+                response = "Invalid/wrong format. Please upload File."
+                return Response(response)
+
+class PredictionModelViewSet(ViewSet):
+    serializer_class = UploadSerializer
+
+    def list(self, request,id =None,*args, **kwargs):
+        # The URL parameters are available in self.kwargs.
+
+        context = {}
+        file_obj=DataFileUpload.objects.get(id=id)
+        file_loc = str(file_obj.actual_file)
+        fileloc = file_loc.replace('/', '\\')
+        fileloc = "media\\" + fileloc
+        model = Prediction(fileloc)
+        context = model.run()
+        return Response(context, status=status.HTTP_200_OK)
+        

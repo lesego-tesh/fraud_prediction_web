@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% load static %}
 {% block title %}
- Fraud Prediction System
+Home | Fraud Prediction System
 {% endblock %}
 {% block css %}
 
@@ -10,43 +10,41 @@
 {% endblock %}
 
 {% block content %}
-<main id="main" >
-
-  <!-- ======= Hero Section ======= -->
-  <section id="homesection" style="padding: 0px 0px;">
-	<!--__________________________________ header-box______________________________________________ -->
-	<div id="header-container">
-		<h1 id="header2">STUDENTS
-		</h1>
-	</div>
-<!-- ___________________________________main-division____________________________________________ -->
-
-	<div class=fraud-container style="margin-bottom: 10px;">
-		<div class=fraud-header-container>
-			<h3 class="fraud-header">UPDATED DETAILS</h3>
+<section class="about-process ptb80">
+	<div class="container">
+	  <div class="row">
+		<div class="col-md-12">
+		  <div class="section-title">
+			<h2>Update Details</h2>
+		  </div>
 		</div>
-		<div class="personaldatacontainer">
+  
+	  <div class="ptb80" id="upload-container">
+		  <div id="upload-header-container">
+			  <h3 id="post-job-resume mt50" class="uppercase text-blue">UPLOAD CREDIT CARD DATASET</h3>
+		  </div>
+		  <div class="upload">
 			<form class="personaldata">
 				<h3>User Login Details</h3><hr>
-				<section>
+				
 				<div>
 				<label>User First Name</label><br>
-				<input class="input" type="text" name="" placeholder="User First Name">
+				<input class="form-control" type="text" name="" placeholder="User First Name">
 				</div>
 
 				<div>
 				<label>User Last Name</label><br>
-				<input class="input" type="text" name="" placeholder="User Last Name">
+				<input class="form-control" type="text" name="" placeholder="User Last Name">
 				</div>
 
 				<div>
 				<label>Login ID</label><br>
-				<input class="input" type="text" name="" placeholder="User Login ID">
+				<input class="form-control" type="text" name="" placeholder="User Login ID">
 				</div>
-				</section>
+			
 				
 				<h3>User Personal Details</h3><hr>
-				<section>
+				
 				<div>
 				<label>Gender</label><br>
 				<article>
@@ -56,53 +54,55 @@
 
 				<div>
 				<label>User Email</label><br>
-				<input class="input" type="text" name="" placeholder="User Email">
+				<input class="form-control" type="text" name="" placeholder="User Email">
 				</div>
 
 				<div>
 				<label>User Mobile</label><br>
-				<input class="input" type="text" name="" placeholder="User Mobile">
+				<input class="form-control" type="text" name="" placeholder="User Mobile">
 				</div>
 
 				<div>
 				<label>User Date of Birth</label><br>
-				<input class="input" type="text" name="" placeholder="User Date of Birth">
+				<input class="form-control" type="text" name="" placeholder="User Date of Birth">
 				</div>
 
 				<div>
 				<label>User Address Line 1</label><br>
-				<input class="input" type="text" name="" placeholder="User Address">
+				<input class="form-control" type="text" name="" placeholder="User Address">
 				</div>
 
 				<div>
 				<label>User Address Line 2</label><br>
-				<input class="input" type="text" name="" placeholder="User Address">
+				<input class="form-control" type="text" name="" placeholder="User Address">
 				</div>
 
 				<div>
 				<label>User City</label><br>
-				<input class="input" type="text" name="" placeholder="User City">
+				<input class="form-control" type="text" name="" placeholder="User City">
 				</div>
 
 				<div>
 				<label>User State</label><br>
-				<input class="input" type="text" name="" placeholder="User State">
+				<input class="form-control" type="text" name="" placeholder="User State">
 				</div>
 
 				<div>
 				<label>User Country</label><br>
-				<input class="input" type="text" name="" placeholder="User Country">
+				<input class="form-control" type="text" name="" placeholder="User Country">
 				</div>
 
 				<div>
 				<label>User Picture</label><br>
-				<input class="input" type="file" class="file" name="">
+				<input class="form-control" type="file" class="file" name="">
 				</div>
 
 
-				</section>
-				<div class="btn-cover">
-				<input  class="btn" type="button" name="" value="SUBMIT">
+				
+				<div class="upload-file-btn mt-30">
+					
+					<input id="btn" type="submit" name="application_attachment" value="submit" >
+				</div>
 			</form>
 		</div>
 	</div>

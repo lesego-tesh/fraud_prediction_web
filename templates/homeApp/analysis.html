@@ -10,27 +10,27 @@ Fraud Prediction System
 <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-<main id="main" >
-
-    <!-- ======= Hero Section ======= -->
-    <section id="homesection" style="padding: 0px 0px;">
-<!--__________________________________ header-box______________________________________________ -->
-<div id="header-container">
-	<h1 id="header2">CREDIT CARD DATASET ANALYSIS</h1>
-</div>
-<!-- ___________________________________main-division____________________________________________ -->
-
-<div class="fraud-container" style="margin-bottom: 10px;">
-	<div class="fraud-header-container">
-		<h3 class="fraud-header">Analysis of the Dataset</h3>
-	</div>
-	<div class="result-table1">
-		<table>
+<section class="about-process ptb80">
+	<div class="container">
+	  <div class="row">
+		<div class="col-md-12">
+		  <div class="section-title">
+			<h2>Evaluations</h2>
+		  </div>
+		</div>
+		<table class="table table-striped table-bordere"
+		style="width: 90%; margin: 1% 4%"
+	  >
 			
-			<tr>
+	<thead style="background-color: #037E8B; text-align: center; color: white;">
+
+        <tr>
 				<th>Algorithm Name</th>
 				<th>Accuracy Score</th>
 			</tr>
+
+		</thead>
+		<tbody style="text-align: center">		
 			<tr>
 				<td>Type of Data</td>
 				<td>{{ dataType }}</td>
@@ -44,7 +44,7 @@ Fraud Prediction System
 				<td>{{UTV}}</td>
 			</tr>
 			<tr>
-				<td>accuracy:</td>
+				<td>accuracy_score:</td>
 				<td>{{score}}</td>
 			</tr>
 			<tr>
@@ -67,6 +67,7 @@ Fraud Prediction System
 				<td>Total Normal</td>
 				<td>{{tNormal}}</td>
 			</tr>
+		</tbody>
 		</table>
 	</div>
 

@@ -259,7 +259,7 @@ class Prediction:
         fig,ax = plot_confusion_matrix(conf_mat=mat,figsize=(6,6), show_normed= False)
         plt.tight_layout()
         fig.savefig('cm.png')
-
+        plt.close(fig)
         print(classification_report(self.y_test,self.y_pred))
         print("\n\n")
 

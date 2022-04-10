@@ -1,73 +1,53 @@
-{% extends "index.html" %}
-{% load static %}
-{% block title %}
- Fraud Prediction System
-{% endblock %}
-{% block css %}
+{% extends "index.html" %} {% load static %} {% block title %} Dashboard | Fraud
+Prediction System {% endblock %} {% block content %}
+<section class="about-process ptb80">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-title">
+          <h2>Dashboard</h2>
+        </div>
+      </div>
 
-<link href="{% static 'assets/css/teststyle.css' %}" rel="stylesheet">
-<link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
-{% endblock %}
+      <!-- Start of First Column -->
+      <div class="col-md-4 col-xs-12 text-center">
+        <div class="process-icon">
+          <i class="fas fa-file-alt" aria-hidden="true"></i>
+        </div>
 
-{% block content %}
-<main id="main" >
+        <h3 class="pb20">
+          <a href="{% url 'upload_credit_data' %}">Upload Files</a>
+        </h3>
+        <p>Start Uploading Some credit data</p>
+      </div>
+      <!-- End of First Column -->
 
-  <!-- ======= Hero Section ======= -->
-  <section id="homesection" style="padding: 0px 0px;">
-   <!--__________________________________ header-box______________________________________________ -->
-<div id="header-container">
-  <h1 id="header2">USER DASHBOARD</h1>
-</div>
-<!-- ___________________________________main-division____________________________________________ -->
-<div id="main-container">
-  <div class="inner-box">
-    <svg viewBox="0 0 80 80" width="200px" height="200px">
-      <a href="{% url 'upload_credit_data' %}">
-        <circle class="circle" cx="40" cy="40" r="38"/>
-        <text x="40" y="35" font-size="10px" fill="#FFFFFF" text-anchor="middle">Upload</text>
-        <text x="40" y="47" font-size="10px" fill="#FFFFFF" text-anchor="middle">Files</text></a>
-    </svg>
+      <!-- Start of Second Column -->
+      <div class="col-md-4 col-xs-12 text-center">
+        <div class="process-icon">
+          <i class="fas fa-chart-area" aria-hidden="true"></i>
+        </div>
+
+        <h3 class="pb20">
+          <a href="{% url 'reports' %}">Files Report</a>
+        </h3>
+        <p>View already upload credit data</p>
+      </div>
+      <!-- End of Second Column -->
+
+      <!-- Start of Third Column -->
+      <div class="col-md-4 col-xs-12 text-center">
+        <div class="process-icon">
+          <i class="fas fa-user" aria-hidden="true"></i>
+        </div>
+
+        <h3 class="pb20">
+          <a href="{% url 'account_details' %}">My Account</a>
+        </h3>
+        <p>Keep your account details current</p>
+      </div>
+      <!-- End of Third Column -->
+    </div>
   </div>
-
-  <div class="inner-box">
-    <svg viewBox="0 0 80 80" width="200px" height="200px">
-      <a href="{% url 'reports' %}">
-        <circle class="circle" cx="40" cy="40" r="38"/>
-        <text x="40" y="35" font-size="10px" fill="#FFFFFF" text-anchor="middle">Files</text>
-        <text x="40" y="47" font-size="10px" fill="#FFFFFF" text-anchor="middle">Report</text></a>
-    </svg>
-  </div>
-
-  <div class="inner-box">
-    <svg viewBox="0 0 80 80" width="200px" height="200px">
-      <a href="{% url 'account_details' %}">
-        <circle class="circle" cx="40" cy="40" r="38"/>
-        <text x="40" y="35" font-size="10px" fill="#FFFFFF" text-anchor="middle">My</text>
-        <text x="40" y="47" font-size="10px" fill="#FFFFFF" text-anchor="middle">Account</text></a>
-    </svg>
-  </div>
-
-  <div class="inner-box">
-    <svg viewBox="0 0 80 80" width="200px" height="200px">
-      <a href="{% url 'change_password' %}">
-        <circle class="circle" cx="40" cy="40" r="38"/>
-        <text x="40" y="35" font-size="10px" fill="#FFFFFF" text-anchor="middle">Change</text>
-        <text x="40" y="47" font-size="10px" fill="#FFFFFF" text-anchor="middle">Password</text></a>
-    </svg>
-  </div>
-
-  <div class="inner-box">
-    <svg viewBox="0 0 80 80" width="200px" height="200px">
-      <a href="">
-        <circle class="circle" cx="40" cy="40" r="38"/>
-        <text x="40" y="40" font-size="10px" fill="#FFFFFF" text-anchor="middle">Logout</text></a>
-    </svg>
-  </div>
-  
-</div>
-  </section><!-- End Hero -->
-
-  </main>
-
-  
+</section>
 {% endblock %}

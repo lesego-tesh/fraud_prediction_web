@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'FPS_API'
+    'fps_api',
+    
+    #'api.apps.ApiConfig',
+    #'corsheaders'
     
 ]
 LOGIN_REDIRECT_URL = '/home_page'
@@ -52,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'FPS.urls'
@@ -142,6 +146,8 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.AllowAny',
     ]
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
