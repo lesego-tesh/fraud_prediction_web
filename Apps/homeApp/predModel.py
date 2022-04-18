@@ -1,272 +1,201 @@
+# load and evaluate a saved model
 import tensorflow as tf
 from tensorflow import keras
-from keras import layers
-from keras import Sequential
-from keras import optimizers
-from keras import utils
-from keras import losses
-#from tensorflow.keras.utils import to_categorical 
-
-#from keras import Flatten,Dense,Dropout,BatchNormalization
-# from keras import Conv1D
-# from keras import Adam
-
-
-
-import pandas as pd
 import numpy as np
-import seaborn as sb
-import matplotlib
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
+from numpy import loadtxt
+from keras.models import load_model
+import os
+from django.conf import settings
+import pandas as pd 
 from sklearn.preprocessing  import StandardScaler
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, fbeta_score, classification_report, confusion_matrix, precision_recall_curve, roc_auc_score     , roc_curve
-from mlxtend.plotting import plot_confusion_matrix
-
-Flatten = layers.Flatten
-Dense = layers.Dense
-Dropout = layers.Dropout
-BatchNormalization = layers.BatchNormalization
-Conv1D = layers.Conv1D
-Adam = optimizers.adam_v2
-to_categorical = losses.BinaryCrossentropy
+ 
+# load model
+path = os.path.join(settings.BASE_DIR, 'media/modfraud.h5')
+model = load_model(path)
+# summarize model.
+model.summary()
 
 
+class predfunction():
+
+    dataset1 = None
+    data_train1 = None
+    data_train2 = None  
+    data_train3 = None
+    data_category = None
+    data_gender = None
+    data_recency_segment = None
+    data_city_pop_segment = None
+    data_location = None
+    data_f = None
 
 
-class Prediction:
-    dataset = None
-    Shape = None
-    DataType = None
-    UTV = None
-    legitimate = None
-    illegitimate = None
-    nullval = None
-    isFraud = None
-    fraudulent = None
-    non_fraudulent = None
-    predictors = None
-    target_column = None
-    X = None
-    y = None
-    X_train = None
-    X_test = None
-    y_train = None
-    y_test = None
-    y_pred = None
-    pred_test =None
-    pred_train = None
-    score = None
-    history = None
-    model = None
-    f1Score = None
-    f2Score = None
 
-    def __init__(self, csv_loc):
-        self.read_dataset(csv_loc)
+  
+  
+
+    def __init__(self, locat) -> None:
+       if  locat:
+        self.dataset1 = pd.read_csv(locat) 
         
-
-    def read_dataset(self,csv_loc):
-        self.dataset = pd.read_csv(csv_loc)
-
-        #making attributes dynamic
-        self.Shape =self.dataset.shape
-        print(self.Shape)
-
-        self.DataType =self.dataset.shape
-        print(self.DataType)
-
-        self.UTV =self.dataset.shape
-        print(self.UTV)
-        
-        self.legitimate =self.dataset.shape
-        print(self.legitimate)
-
-        self.f1Score = self.dataset.shape
-        print(self.f1Score)
-
-        self.illegitimate =self.dataset.shape
-        print(self.illegitimate)
-
-        self.score = self.dataset.shape
-        print(self.score)
-        
-        dataset_desc = self.dataset.describe()
-        print(dataset_desc)
-
-        self.nullval= self.dataset.isnull().sum().sum()
-        print(self.nullval)
-
-        self.isFraud = self.dataset['Class'].value_counts()
-        print(self.isFraud)
-
-        
-    
-    def run(self):
-        self.predictors()
-        self.group()
-        self.ranSelect()
-        self.train()
-        self.labels()
-        self.scale()
-        self.reshape()
-        self.BuildModel()
-        self.predict()
-        self.precisionRecall()
-        
-        
-
-        analysis = {
-            "dataType":self.DataType,
-            "Shape": self.Shape,
-            "UTV":	self.UTV,
-            "score":self.score,
-            "f1Score": self.f1Score,
-            "f2Score": self.f2Score,
-            "anyNull":	self.nullval,
-            "tFraud":	self.isFraud[1],
-            "tNormal":	self.isFraud[0]
-        }
-    
-        print("\n\n")
-        print(analysis)
-
-        return analysis
-
-    def predictors(self):
-        ##creating an array for the features and response variables
-        self.target_column = ['Class'] 
-        self.predictors = list(set(list(self.dataset))-set(self.target_column))
-        self.dataset[self.predictors] = self.dataset[self.predictors]/self.dataset[self.predictors].max()
-        self.dataset.describe()
-        print(self.dataset.describe())
-
-    def group(self):
-        #grouping the data and structure
-        self.non_fraudulent = self.dataset[self.dataset['Class']== 0]
-        self.fraudulent = self.dataset[self.dataset['Class']== 1] 
-        #self.non_fraudulent.shape,self.fraudulent.shape
-        print(self.non_fraudulent.shape,self.fraudulent.shape)
-
-        #selecting fraudulent transactions from non fraudulent ones using random selection
-        self.non_fraudulent = self.non_fraudulent.sample(self.fraudulent.shape[0])
-        self.non_fraudulent.shape
-        print(self.non_fraudulent.shape)
-
-    def ranSelect(self):
-        self.dataset = self.fraudulent.append(self.non_fraudulent,ignore_index = True)
-        print(self.dataset)
-        print(self.dataset['Class'].value_counts())
-
-    def train(self):
-       #  x - dependent variable , y -dependent
-        #splits into test and train
-        self.X = self.dataset[self.predictors].values
-        self.y = self.dataset[self.target_column].values
-
-        self.X_train,self.X_test, self.y_train,self.y_test = train_test_split(self.X, self.y, test_size=0.20, random_state= 0, stratify=self.y)
-        print(self.X_train.shape); print(self.X_test.shape)
-    
-    def labels(self):
-        self.X = self.dataset.drop('Class',axis =1)
-        self.y = self.dataset['Class']
-    
-    def scale(self):
-    #standardizes a feature by subtracting the mean and then scaling to unit variance
-     scaler = StandardScaler()
-     self.X_train = scaler.fit_transform(self.X_train)
-     self.X_test = scaler.fit_transform(self.X_test)
-     self.X_train.shape  
-
-    def reshape(self):
-       self.X_train = self.X_train.reshape(self.X_train.shape[0],self.X_train.shape[1],1)
-       self.X_test = self.X_test.reshape(self.X_test.shape[0],self.X_test.shape[1],1)
-       print(self.X_train.shape,self.X_test.shape)
-
-    
-    def BuildModel(self):
-        #Build ccn model
-
-        epochs = 20
-        #first layer
-        self.model = Sequential()
-        self.model.add(Conv1D(32,2,activation='relu',input_shape = self.X_train[0].shape))
-        self.model.add(BatchNormalization())
-        self.model.add(Dropout(0.2))
-
-        #second layer
-        self. model.add(Conv1D(64,2,activation='relu'))
-        self.model.add(BatchNormalization())
-        self.model.add(Dropout(0.5))
-
-        #convert multidimensional layer to a vector
-        self.model.add(Flatten())
-        self.model.add(Dense(64 ,activation='relu'))
-        self.model.add(Dropout(0.5))
-
-        self.model.add(Dense(1, activation='sigmoid'))
-
-        
-
-        # Configure the learning process by selecting 'Binary cross tropy' as a loss function
-        # 'Adam' as a optimization function, and to optimize the 'Accuracy matrix'  
-        self.model.compile(loss='binary_crossentropy', optimizer='Adam',
-                metrics=['accuracy'])
-
-        self.history = self.model.fit(self.X_train,self.y_train,epochs= 20, validation_data=(self.X_test,self.y_test), batch_size = 100,verbose =1)
-        print(self.history)
-
-        print(self.model.summary())
 
     def predict(self):
-        self.pred_train= self.model.predict(self.X_train)
-        scores = self.model.evaluate(self.X_train, self.y_train, verbose=0)
-        print('Accuracy on training data: {} \n Error on training data: {}'.format(scores[1], 1 - scores[1]))   
+        # Convert transform dataset
+        # we cannot work on trans_num as there is no unique pattern, so dropping it
+        self.dataset1 = self.dataset1.drop("trans_num",1)
 
-        self.pred_test= self.model.predict(self.X_test)
-        scores2 = self.model.evaluate(self.X_test, self.y_test, verbose=0)
-        print('Accuracy on test data: {} \n Error on test data: {}'.format(scores2[1], 1 - scores2[1]))    
+        # we can have look on unix time, unix time is generally the number of seconds passed from the UNIX EPOCH 
+        # we can use this to know the recency of transactions of same cc_num
+        self.dataset1["recency"] = self.dataset1.groupby(by="cc_num")["unix_time"].diff()
+        print(self.dataset1.info())
+        # checking null values of recency
+        
+        self.dataset1["recency"].isnull().sum()
+        
+        # we are getting null values because as 983 because there are 983 unique values of cards, this means whenever the cc_num group changes
+        # python makes the first value of every group null, so making them as starting payment, we will initialize null values to -1
+       
+        self.dataset1.loc[self.dataset1.recency.isnull(),["recency"]] = -1
 
-        self.y_pred =( self.model.predict(self.X_test) > 0.5).astype("int32")
-        self.score = accuracy_score(self.y_test,self.y_pred)
-        print(self.score)
+        # print(self.dataset1.isnull().sum() )
+        
+       
+        # converting trans_date_trans_time to datetime
+        self.dataset1["trans_date_trans_time"] = pd.to_datetime(self.dataset1["trans_date_trans_time"])
+        
+         # Dropping unix time
+        self.dataset1 = self.dataset1.drop("unix_time",1)
+       
+       
+        # Unnamed: 0 as it is the index only and we have index present with us
+        self.dataset1 = self.dataset1.drop(columns=["Unnamed: 0"])
+        
+        #dropping dob
+       
+        self.dataset1 = self.dataset1.drop("dob",1)
+        
 
-    def precisionRecall(self):
-        self.history.history
+        # sometimes distance from the customer's home location to the merchant's location can prove out to be main reason for fraud, so taking the 
+        # difference of longitude and lattitude of respective columns
+        # we have used abs function so that we get proper distance diiference in positive as abs makes negative values positive and used as a mod function
 
-        ## plot training and validation accuracy values
+        
+        self.dataset1["lat_diff"] = abs(self.dataset1.lat - self.dataset1.merch_lat)
+        self.dataset1["long_diff"] = abs(self.dataset1["long"] - self.dataset1["merch_long"])
+       
+        
+        # here we have applied pythogoras theorem and we have multiplied with 110 because each degree of longitude and lattitude 110 kilometers apart
+        self.dataset1["displacement"] = np.sqrt(pow((self.dataset1["lat_diff"]*110),2) + pow((self.dataset1["long_diff"]*110),2))
+        
+       
+        # now since we got the displacement so longitudes and lattitudes columns are of no use now, so we can remove them
+        self.dataset1 = self.dataset1.drop(columns = ["lat","long","merch_lat","merch_long","lat_diff","long_diff"])
 
-        plt.plot(self.history.history['accuracy'])
-        plt.plot(self.history.history['val_accuracy'])
-        plt.title('Model accuracy')
-        plt.ylabel('Accuracy')
-        plt.xlabel('Epoch')
-        plt.legend(['Train','val'],loc='upper left')
-        plt.show()
+        self.dataset1 = self.dataset1.drop(columns = ["city","zip","street"])
+        
 
-        #plot training & validation loss values
-        plt.plot(self.history.history['loss'])
-        plt.plot(self.history.history['val_loss'])
-        plt.title('Model loss')
-        plt.ylabel('loss')
-        plt.xlabel('Epoch')
-        plt.legend(['Train','val'],loc ='upper left')
-        plt.show()
-        print("\n\n")
-        matplotlib.rcParams.update(matplotlib.rcParamsDefault)
-        #confusion matrix
-        mat = confusion_matrix(self.y_test,self.y_pred)
-        fig,ax = plot_confusion_matrix(conf_mat=mat,figsize=(6,6), show_normed= False)
-        plt.tight_layout()
-        fig.savefig('cm.png')
-        plt.close(fig)
-        print(classification_report(self.y_test,self.y_pred))
-        print("\n\n")
+        # now we can bin the displacement into near, far and very far records
+        # if merchant lies between the range of 0-45 then it is near, while above 45 but below 90 will be far and rest can be very far
+        
+        self.dataset1.loc[(self.dataset1["displacement"]<45),["location"]] = "Nearby"
+        self.dataset1.loc[((self.dataset1["displacement"]>45) & (self.dataset1["displacement"]<90)),["location"]] = "Far Away"
+        self.dataset1.loc[(self.dataset1["displacement"]>90),["location"]] = "Long Distance"
+       
+        # checking location column
+      
+        print( self.dataset1.location.value_counts(normalize = True))
 
-        self.f1Score = (2 *(0.99*0.69/(0.99+0.69)))
-        self.f2Score = (2*(0.76*0.99/(0.76+0.99)))
+        # converting Time column to datetime
+        self.dataset1["Time"] = pd.to_datetime(self.dataset1["trans_date_trans_time"]).dt.hour
+       
+        # segregating city_population tab on the basis of less dense, adequately densed, densely populated
+        self.dataset1.loc[(self.dataset1["city_pop"]<10000),["city_pop_segment"]] = "Less Dense"
+        self.dataset1.loc[((self.dataset1["city_pop"]>10000) & (self.dataset1["city_pop"]<50000)),["city_pop_segment"]] = "Adequately Dense"
+        self.dataset1.loc[(self.dataset1["city_pop"]>50000),["city_pop_segment"]] = "Densely populated"
+
+        
+        # checking constitution of each segment
+        self.dataset1.city_pop_segment.value_counts(normalize = True)
+
+        # dropping column city_pop as it is of no use now
+        
+        self.dataset1 = self.dataset1.drop("city_pop",1)
+       
+        # dividing recency column into segments but first converting them from seconds to minutes
+        self.dataset1.recency =self.dataset1.recency.apply(lambda x: float((x/60)/60))
+
+        
+        # dividing recency to segments based on number of hours passed
+        self.dataset1.loc[(self.dataset1["recency"]<1),["recency_segment"]] = "Recent_Transaction"
+        self.dataset1.loc[((self.dataset1["recency"]>1) & (self.dataset1["recency"]<6)),["recency_segment"]] = "Within 6 hours"
+        self.dataset1.loc[((self.dataset1["recency"]>6) & (self.dataset1["recency"]<12)),["recency_segment"]] = "After 6 hours"
+        self.dataset1.loc[((self.dataset1["recency"]>12) & (self.dataset1["recency"]<24)),["recency_segment"]] = "After Half-Day"
+        self.dataset1.loc[(self.dataset1["recency"]>24),["recency_segment"]] = "After 24 hours"
+        self.dataset1.loc[(self.dataset1["recency"]<0),["recency_segment"]] = "First Transaction"
+        self.dataset1.recency_segment.value_counts(normalize = True)
+        
+        ## create dummy variables
+        #creating dummy variables
+        self.data_train1 = self.dataset1.drop(columns=["trans_date_trans_time","merchant","job","state"])
+        self.data_train2 = pd.get_dummies(self.data_train1,columns=["category","gender","recency_segment","city_pop_segment","location"], drop_first=True)
+
+        # One-Hot Encoding
+        # One Hot Encoding is a process in the data processing that is applied to categorical data, 
+        # to convert it into a binary vector representation for use in machine learning algorithms
+        self.data_train3 = pd.get_dummies(self.data_train1, columns=["category","gender","recency_segment","city_pop_segment","location"], drop_first=True)
+        # self.data_train3.info()
+
+        self.data_category = pd.get_dummies(self.data_train1.category, prefix='category')
+        # self.data_category.info()
+
+        self.data_gender = pd.get_dummies(self.data_train1.gender, prefix='gender')
+        # self.data_gender.info()
+
+        self.data_recency_segment = pd.get_dummies(self.data_train1.recency_segment, prefix='recency_segment')
+        # self.data_recency_segment.info()
+
+        self.data_city_pop_segment = pd.get_dummies(self.data_train1.city_pop_segment, prefix='city_pop_segment')
+        # self.data_city_pop_segment.info()
+
+        self.data_location = pd.get_dummies(self.data_train1.location, prefix='location')
+        # self.data_location.info()
+
+        self.data_f = pd.concat([self.data_train1, self.data_category, self.data_gender, self.data_recency_segment, self.data_city_pop_segment, self.data_location], axis=1)
+
+        ##remove columns that are not needed then later remove the target variable
+        self.data_f = self.data_f.drop(columns=['first','last','location','category','recency_segment','city_pop_segment','displacement','gender_F','gender'])
+        # self.data_f.info()
+
+        # Get New Shape
+        shape = len(self.data_f.columns)
+
+        #model.layers[1].batch_input_shape = shape
+        new_model = model.layers.pop(0)
+        new_model = tf.keras.Sequential()
+        new_model.add(tf.keras.Input(shape=(None,shape)))
+        for layer in model.layers[1:]:
+         new_model.add(layer)
+
+        # rebuild model architecture by exporting and importing via json
+        new_model = keras.models.model_from_json(new_model.to_json())
+        new_model.summary()
+
+        result = "fraudulent"
+        prediction = new_model.predict(self.data_f)
+        if (prediction[0][0]== 0):
+            result = "not fraudulent"
 
 
-    
+        print(new_model.predict(self.data_f))
+        return(result)
 
-    
+
+
+    def evaluate(self):
+        # x_test = pd.read_csv(r"C:\Users\Nkomazana\Desktop\Project\fraudTrain.csv")
+        # y_test = pd.
+
+        Evaluation_Results = model.metrics()
+        print(Evaluation_Results)
+        
+        return

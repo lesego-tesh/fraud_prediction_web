@@ -6,22 +6,38 @@ from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.conf import settings
-from .models import DataFileUpload
-from .predModel import Prediction
+from .models import DataFileUpload, transactionUpload
+from .predModel import predfunction
 def base(request):
     return render(request,'homeApp/landing_page.html')
     
 def upload_credit_data(request):
     return render(request,'homeApp/upload_credit_data.html')
-def prediction_button(request,id):
+
+def predict_page(request,id):
     context = {}
-    print(id)
-    file_obj=DataFileUpload.objects.get(id=id)
+    file_obj= transactionUpload.objects.get(id=id)
     file_loc = str(file_obj.actual_file)
     fileloc = file_loc.replace('/', '\\')
     fileloc = "media\\" + fileloc
-    model = Prediction(fileloc)
-    context = model.run()
+    print(fileloc)
+    prediction = predfunction(fileloc)
+    context["results"] = prediction.predict()
+    
+    return render(request,'homeApp/Predict.html',context)
+
+def predictions_page(request):
+    return render(request,'homeApp/Predictions_upload.html')
+
+def prediction_button(request,id):
+    context = {}
+    print(id)
+    # file_obj=DataFileUpload.objects.get(id=id)
+    # file_loc = str(file_obj.actual_file)
+    # fileloc = file_loc.replace('/', '\\')
+    # fileloc = "media\\" + fileloc
+    # model = Prediction(fileloc)
+    # context = model.run()
     print("\n context")
     print(context)
     
@@ -41,7 +57,7 @@ def add_files_single(request,id):
     file_loc = str(file_obj.actual_file)
     fileloc = file_loc.replace('/', '\\')
     fileloc = "media\\" + fileloc
-    model = Prediction(fileloc)
+    # model = Prediction(fileloc)
     context = model.run()
     print("\n context")
     print(context)
@@ -61,7 +77,11 @@ def account_details(request):
 def change_password(request):
     return render(request,'homeApp/change_password.html')
 def analysis(request):
-    return render(request,'homeApp/analysis.html')
+     context = {}
+     prediction = predfunction('')
+     context["results"] = prediction.evaluate()
+     return render(request,'homeApp/analysis.html', context)
+     
 def decode_utf8(input_iterator):
     for l in input_iterator:
         yield l.decode('utf-8')
@@ -113,6 +133,29 @@ def upload_data(request):
             )
             messages.success(request, "File Uploaded succesfully",extra_tags = 'alert alert-success alert-dismissible show')
             return HttpResponseRedirect('/reports')
+    # return HttpResponseRedirect('reports')
+def Predictions_upload(request):
+    if request.method == 'POST':
+            data_file_name  = request.POST.get('data_file_name')
+            try:
+                actual_file = request.FILES['actual_file_name']
+                
+            except:
+                messages.warning(request, "Invalid/wrong format. Please upload File.")
+                return redirect('/upload_credit_data')
+
+                
+            description  = request.POST.get('description')
+
+
+            t = transactionUpload.objects.create (
+                file_name=data_file_name,
+                actual_file=actual_file,
+                description=description,
+                
+            )
+            messages.success(request, "File Uploaded succesfully",extra_tags = 'alert alert-success alert-dismissible show')
+            return HttpResponseRedirect('/predict/'+str(t.id))
     # return HttpResponseRedirect('reports')
     
 

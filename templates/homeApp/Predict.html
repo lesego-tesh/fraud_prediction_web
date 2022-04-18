@@ -18,65 +18,12 @@ Analysis |Fraud Prediction System
 			<h2>Evaluations</h2>
 		  </div>
 		</div>
-		<table class="table table-striped table-bordere"
-		style="width: 90%; margin: 1% 4%"
-	  >
-			
-	<thead style="background-color: #037E8B; text-align: center; color: white;">
-
-        <tr>
-				<th>Algorithm Name</th>
-				<th>Accuracy Score</th>
-			</tr>
-
-		</thead>
-		<tbody style="text-align: center">		
-			<tr>
-				<td>Type of Data</td>
-				<td>{{ dataType }}</td>
-			</tr>
-			<tr>
-				<td>Data Shape</td>
-				<td>{{Shape}}</td>
-			</tr>
-			<tr>
-				<td>Unique Target Values</td>
-				<td>{{UTV}}</td>
-			</tr>
-			<tr>
-				<td>accuracy_score:</td>
-				<td>{{score}}</td>
-			</tr>
-			<tr>
-				<td>f1Score :</td>
-				<td>{{f1Score}}</td>
-			</tr>
-			<tr>
-				<td>f2Score :</td>
-				<td>{{f2Score}}</td>
-			</tr>
-			<tr>
-				<td>Is there any null values</td>
-				<td>{{anyNull}}</td>
-			</tr>
-			<tr>
-				<td>Total Fraud</td>
-				<td>{{tFraud}}</td>
-			</tr>
-			<tr>
-				<td>Total Normal</td>
-				<td>{{tNormal}}</td>
-			</tr>
-		</tbody>
-		</table>
-	</div>
-
-	<div class="fraud-header-container">
-		<h3 class="fraud-header">Credit Card Fraud Percentage according to dataset</h3>
-	</div>
-
 	
+	<div class="fraud-header-container">
+		<h3 class="fraud-header">{{ results }}</h3>
+	</div>
 
+</div>
 </div>
 
     </section><!-- End Hero -->

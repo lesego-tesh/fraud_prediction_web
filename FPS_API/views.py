@@ -3,7 +3,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib import messages
-from Apps.homeApp.predModel import Prediction
+# from Apps.homeApp.predModel import Prediction
 
 from .Serializers import UploadSerializer
 # Import Models
@@ -51,7 +51,7 @@ class PredictionModelViewSet(ViewSet):
         file_loc = str(file_obj.actual_file)
         fileloc = file_loc.replace('/', '\\')
         fileloc = "media\\" + fileloc
-        model = Prediction(fileloc)
-        context = model.run()
+        # model = Prediction(fileloc)
+        # context = model.run()
         return Response(context, status=status.HTTP_200_OK)
         

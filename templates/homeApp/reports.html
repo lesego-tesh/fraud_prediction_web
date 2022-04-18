@@ -1,11 +1,11 @@
-{% extends "index.html" %} {% load static %} {% block title %} Home | Fraud
+{% extends "index.html" %} {% load static %} {% block title %} Reports | Fraud
 Prediction System {% endblock %} {% block content %}
 <section class="about-process ptb80">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
         <div class="section-title">
-          <h2>File Reposrts</h2>
+          <h2>File Reports</h2>
         </div>
       </div>
 
@@ -36,7 +36,7 @@ Prediction System {% endblock %} {% block content %}
             >
             <a href="{% url 'prediction_button' i.id %}"
               ><button type="button" class="btn btn-dark">
-                Prediction
+                Evaluation
               </button></a
             >
             <a href="{% url 'delete_data' i.id %}"
