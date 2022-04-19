@@ -15,16 +15,39 @@ Analysis |Fraud Prediction System
 	  <div class="row">
 		<div class="col-md-12">
 		  <div class="section-title">
-			<h2>Evaluations</h2>
+			<h2>Prediction</h2>
 		  </div>
 		</div>
+
+		<div class="row" style="display: flex;">
+			<table class="table table-striped table-bordered col"
+			style="width: 90%; margin: 1% 4%"
+		  >
+				
+		<thead style="background-color: #037E8B; text-align: center; color: white;">
 	
-	<div class="fraud-header-container">
+			<tr>
+					<th> File Name</th>
+					<th> Prediction results</th>
+				</tr>
+	
+			</thead>
+			<tbody style="text-align: center">		
+				<tr>
+					<td> {{filename}} </td>
+					<td>{{results }}</td>
+				</tr>
+			</tbody>
+			</table>
+			
+	
+	{% comment %} <div class="fraud-header-container">
+
 		<h3 class="fraud-header">{{ results }}</h3>
 	</div>
 
 </div>
-</div>
+</div> {% endcomment %}
 
     </section><!-- End Hero -->
   

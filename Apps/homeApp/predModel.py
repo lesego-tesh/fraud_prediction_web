@@ -191,11 +191,4 @@ class predfunction():
 
 
 
-    def evaluate(self):
-        # x_test = pd.read_csv(r"C:\Users\Nkomazana\Desktop\Project\fraudTrain.csv")
-        # y_test = pd.
-
-        Evaluation_Results = model.metrics()
-        print(Evaluation_Results)
-        
-        return
+    

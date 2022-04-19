@@ -1,11 +1,14 @@
 import csv
 import os
+from pyexpat import model
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http.response import HttpResponseRedirect,HttpResponse
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.conf import settings
+
+from Apps.homeApp.evaluate import Evaluate
 from .models import DataFileUpload, transactionUpload
 from .predModel import predfunction
 def base(request):
@@ -22,6 +25,7 @@ def predict_page(request,id):
     fileloc = "media\\" + fileloc
     print(fileloc)
     prediction = predfunction(fileloc)
+    context['filename'] = file_loc = str(file_obj.file_name)
     context["results"] = prediction.predict()
     
     return render(request,'homeApp/Predict.html',context)
@@ -32,12 +36,13 @@ def predictions_page(request):
 def prediction_button(request,id):
     context = {}
     print(id)
-    # file_obj=DataFileUpload.objects.get(id=id)
-    # file_loc = str(file_obj.actual_file)
-    # fileloc = file_loc.replace('/', '\\')
-    # fileloc = "media\\" + fileloc
-    # model = Prediction(fileloc)
-    # context = model.run()
+    file_obj=DataFileUpload.objects.get(id=id)
+    file_loc = str(file_obj.actual_file)
+    fileloc = file_loc.replace('/', '\\')
+    fileloc = "media\\" + fileloc
+    model = Evaluate(fileloc)
+    context = model.run()
+  
     print("\n context")
     print(context)
     
@@ -53,16 +58,16 @@ def predict_data_manually(request):
     return render(request,'homeApp/predict_data_manually.html')
 
 def add_files_single(request,id):
-    file_obj=DataFileUpload.objects.get(id=id)
-    file_loc = str(file_obj.actual_file)
-    fileloc = file_loc.replace('/', '\\')
-    fileloc = "media\\" + fileloc
-    # model = Prediction(fileloc)
-    context = model.run()
-    print("\n context")
-    print(context)
-    
-    return render(request,'homeApp/analysis.html', context)
+#     file_obj=DataFileUpload.objects.get(id=id)
+#     file_loc = str(file_obj.actual_file)
+#     fileloc = file_loc.replace('/', '\\')
+#     fileloc = "media\\" + fileloc
+#     # model = Prediction(fileloc)
+#     context = model.run()
+#     print("\n context")
+#     print(context)
+  return render(request,'homeApp/analysis.html')
+
 def predict_csv_single(request):
     return render(request,'homeApp/predict_csv_single.html')
 
@@ -77,11 +82,11 @@ def account_details(request):
 def change_password(request):
     return render(request,'homeApp/change_password.html')
 def analysis(request):
-     context = {}
-     prediction = predfunction('')
-     context["results"] = prediction.evaluate()
-     return render(request,'homeApp/analysis.html', context)
-     
+    #  context = {}
+    #  prediction = predfunction('')
+    #  context["results"] = prediction.evaluate()
+     return render(request,'homeApp/analysis.html')
+
 def decode_utf8(input_iterator):
     for l in input_iterator:
         yield l.decode('utf-8')

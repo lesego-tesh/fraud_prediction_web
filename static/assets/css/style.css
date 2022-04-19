@@ -8024,11 +8024,11 @@ body {
 }
 .example-slider .fnc-slide-1 .fnc-slide__inner,
 .example-slider .fnc-slide-1 .fnc-slide__mask-inner {
-  background-image: url("../img/slide4zaaz.jpg");
+  background-image: url("../img/slide4.jpg");
 }
 .example-slider .fnc-slide-2 .fnc-slide__inner,
 .example-slider .fnc-slide-2 .fnc-slide__mask-inner {
-  background-image: url("../img/__slide-2.jpg");
+  background-image: url("../img/slide4.jpg");
 }
 
 .example-slider .fnc-slide-3 .fnc-slide__inner,
