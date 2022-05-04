@@ -5,7 +5,7 @@ from rest_framework import status
 from django.contrib import messages
 from Apps.homeApp.predModel import predfunction
 from Apps.homeApp.evaluate import Evaluate
-from .Serializers import UploadSerializer
+from .Serializers import UploadSerializer,transactionUploadSerializer
 # Import Models
 from Apps.homeApp.models import DataFileUpload,transactionUpload
 
@@ -67,7 +67,7 @@ class Predictions_upload(ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-    def create (request):
+    def create (self,request):
         if request.method == 'POST':
             data_file_name  = request.POST.get('data_file_name')
             try:
@@ -91,22 +91,25 @@ class Predictions_upload(ViewSet):
                 response = "Invalid/wrong format. Please upload File."
                 return Response(response)
 
-class predict (ViewSet):
-
-        def list(self, request,id =None,*args, **kwargs):
-            # The URL parameters are available in self.kwargs.
-
-            context = {}
-            file_obj=transactionUpload.objects.get(id=id)
-            file_loc = str(file_obj.actual_file)
-            fileloc = file_loc.replace('/', '\\')
-            fileloc = "media\\" + fileloc
-            print(fileloc)
-            prediction = predfunction(fileloc)
-            context['filename'] = file_loc = str(file_obj.file_name)
-            context["results"] = prediction.predict()
+# class predict (ViewSet):
+#  serializer_class = UploadSerializer
+#  def list(self, request):
+#             # The URL parameters are available in self.kwargs.
+    
+#             context = {}
+#             file_obj=transactionUpload.objects.get(id)
+#             file_loc = str(file_obj.actual_file)
+#             fileloc = file_loc.replace('/', '\\')
+#             fileloc = "media\\" + fileloc
+#             print(fileloc)
+#             prediction = predfunction(fileloc)
+#             context['filename'] = file_loc = str(file_obj.file_name)
+#             context["results"] = prediction.predict()
             
-            return Response(context, status=status.HTTP_200_OK)
+#             return Response(context, status=status.HTTP_200_OK)
+
+
+   
 
 class predictLatest(ViewSet):
 

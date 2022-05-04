@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.conf import settings
 
 from Apps.homeApp.evaluate import Evaluate
+from fps_api.views import Evaluation
 from .models import DataFileUpload, transactionUpload
 from .predModel import predfunction
 def base(request):
@@ -35,7 +36,7 @@ def predictions_page(request):
 
 def prediction_button(request,id):
     context = {}
-    print(id)
+    print(id)   
     file_obj=DataFileUpload.objects.get(id=id)
     file_loc = str(file_obj.actual_file)
     fileloc = file_loc.replace('/', '\\')
@@ -57,25 +58,25 @@ def enter_form_data_manually(request):
 def predict_data_manually(request):
     return render(request,'homeApp/predict_data_manually.html')
 
-def add_files_single(request,id):
-#     file_obj=DataFileUpload.objects.get(id=id)
-#     file_loc = str(file_obj.actual_file)
-#     fileloc = file_loc.replace('/', '\\')
-#     fileloc = "media\\" + fileloc
-#     # model = Prediction(fileloc)
-#     context = model.run()
-#     print("\n context")
-#     print(context)
-  return render(request,'homeApp/analysis.html')
+# # def add_files_single(request,id):
+# # #     file_obj=DataFileUpload.objects.get(id=id)
+# # #     file_loc = str(file_obj.actual_file)
+# # #     fileloc = file_loc.replace('/', '\\')
+# # #     fileloc = "media\\" + fileloc
+# # #     # model = Prediction(fileloc)
+# # #     context = model.run()
+# # #     print("\n context")
+# # #     print(context)
+#   return render(request,'homeApp/analysis.html')
 
-def predict_csv_single(request):
-    return render(request,'homeApp/predict_csv_single.html')
+# def predict_csv_single(request):
+#     return render(request,'homeApp/predict_csv_single.html')
 
-def add_files_multi(request):
-    return render(request,'homeApp/add_files_multi.html')
+# def add_files_multi(request):
+#     return render(request,'homeApp/add_files_multi.html')
     
-def predict_csv_multi(request):
-    return render(request,'homeApp/predict_csv_multi.html')
+# def predict_csv_multi(request):
+#     return render(request,'homeApp/predict_csv_multi.html')
 
 def account_details(request):
     return render(request,'homeApp/account_details.html')
@@ -138,7 +139,7 @@ def upload_data(request):
             )
             messages.success(request, "File Uploaded succesfully",extra_tags = 'alert alert-success alert-dismissible show')
             return HttpResponseRedirect('/reports')
-    # return HttpResponseRedirect('reports')
+    
 def Predictions_upload(request):
     if request.method == 'POST':
             data_file_name  = request.POST.get('data_file_name')
@@ -159,9 +160,9 @@ def Predictions_upload(request):
                 description=description,
                 
             )
-            messages.success(request, "File Uploaded succesfully",extra_tags = 'alert alert-success alert-dismissible show')
-            return HttpResponseRedirect('/predict/'+str(t.id))
-    # return HttpResponseRedirect('reports')
+            messages.success(request, "File predicted succesfully",extra_tags = 'alert alert-success alert-dismissible show')
+            return HttpResponseRedirect('/predict/'+ str(t.id))
+    
     
 
 def userLogout(request):
